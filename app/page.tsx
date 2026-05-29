@@ -1,19 +1,21 @@
-import HeroSection from '@/components/HeroSection';
-import AboutSection from '@/components/AboutSection';
-import MenuShowcase from '@/components/MenuShowcase';
-import Testimonials from '@/components/Testimonials';
+import HeroSectionNew from '@/components/HeroSectionNew';
+import AboutSectionNew from '@/components/AboutSectionNew';
+import FeaturedProductsNew from '@/components/FeaturedProductsNew';
+import GallerySectionNew from '@/components/GallerySectionNew';
 import LocationMap from '@/components/LocationMap';
 import CTASection from '@/components/CTASection';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
-      <AboutSection />
-      <MenuShowcase />
-      <Testimonials />
+      <HeroSectionNew />
+      <AboutSectionNew />
+      <FeaturedProductsNew />
+      <GallerySectionNew />
       <LocationMap />
       <CTASection />
+      <Footer />
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { businessData } from '@/lib/data';
@@ -25,14 +26,30 @@ export default function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-amber-200 shadow-md"
     >
       <div className="container-premium flex items-center justify-between h-20">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-stone-700 rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:shadow-glow transition-all">
-            Z
-          </div>
+        {/* Logo - Premium Brand Mark */}
+        <Link href="/" className="flex items-center gap-3 group hover:opacity-80 transition-opacity duration-300">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition-shadow"
+          >
+            <Image
+              src="/logo.png"
+              alt="Zion Cakes and Bites"
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
           <div className="hidden sm:block">
-            <h1 className="text-sm font-serif font-bold text-stone-900">Zion</h1>
-            <p className="text-xs text-orange-600">Cakes & Bites</p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+            >
+              <h1 className="text-base font-bold text-stone-900" style={{ fontFamily: 'Montserrat' }}>Zion</h1>
+              <p className="text-xs font-semibold text-orange-600 tracking-wide" style={{ fontFamily: 'Roboto' }}>CAKES & BITES</p>
+            </motion.div>
           </div>
         </Link>
 
