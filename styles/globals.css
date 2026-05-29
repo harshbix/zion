@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --color-cream-50: #FFFBF5;
+  --color-cream-100: #FFF8ED;
+  --color-cream-200: #FFF1DC;
+  --color-cream-300: #FFE8CC;
+  --color-cream-400: #FFD9B3;
+  --color-cream-500: #FFCCAA;
+  --color-cream-600: #E8B896;
+  
+  --color-caramel-50: #FFF9F0;
+  --color-caramel-100: #FFF3E0;
+  --color-caramel-200: #FFE0B2;
+  --color-caramel-300: #FFCC80;
+  --color-caramel-400: #FFB74D;
+  --color-caramel-500: #FFA726;
+  --color-caramel-600: #FB8C00;
+  --color-caramel-700: #E65100;
+  
+  --color-chocolate-50: #FAFAF9;
+  --color-chocolate-100: #F5F5F4;
+  --color-chocolate-200: #E7E5E4;
+  --color-chocolate-300: #D6D3D1;
+  --color-chocolate-400: #A89968;
+  --color-chocolate-500: #8B7355;
+  --color-chocolate-600: #6B5344;
+  --color-chocolate-700: #5C4A3D;
+  --color-chocolate-800: #3E3331;
+  --color-chocolate-900: #27201B;
+  
+  --color-gold-50: #FFFEF2;
+  --color-gold-100: #FFFCE6;
+  --color-gold-200: #FFFACC;
+  --color-gold-300: #FFF8B3;
+  --color-gold-400: #FFE680;
+  --color-gold-500: #FFD700;
+  --color-gold-600: #E6C200;
+  --color-gold-700: #B39D00;
+  --color-gold-800: #8B7600;
+  --color-gold-900: #5C5000;
+}
+
+* {
+  @apply antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-amber-50 text-stone-900;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-serif;
+}
+
+h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl font-bold leading-tight;
+}
+
+h2 {
+  @apply text-4xl md:text-5xl font-bold;
+}
+
+h3 {
+  @apply text-3xl md:text-4xl font-bold;
+}
+
+h4 {
+  @apply text-2xl md:text-3xl font-semibold;
+}
+
+h5 {
+  @apply text-xl md:text-2xl font-semibold;
+}
+
+h6 {
+  @apply text-lg md:text-xl font-semibold;
+}
+
+/* Links */
+a {
+  @apply transition-colors duration-300;
+}
+
+a:not([class]) {
+  @apply text-stone-700 hover:text-orange-600 underline;
+}
+
+/* Buttons */
+button {
+  @apply transition-all duration-300;
+}
+
+/* Premium Glassmorphism */
+.glass {
+  @apply bg-white/40 backdrop-blur-md border border-white/30 rounded-2xl;
+}
+
+.glass-dark {
+  @apply bg-stone-900/20 backdrop-blur-md border border-stone-800/30 rounded-2xl;
+}
+
+/* Luxury Shadow */
+.luxury-shadow {
+  @apply shadow-2xl;
+}
+
+.luxury-shadow-lg {
+  @apply shadow-2xl;
+}
+
+/* Glow Effect */
+.glow {
+  @apply shadow-lg;
+}
+
+/* Gradient Overlays */
+.gradient-overlay {
+  @apply absolute inset-0 bg-gradient-to-br from-stone-900/80 via-stone-900/60 to-transparent;
+}
+
+.gradient-overlay-light {
+  @apply absolute inset-0 bg-gradient-to-br from-amber-50/20 via-transparent to-transparent;
+}
+
+/* Section Spacing */
+.section-padding {
+  @apply py-16 md:py-24 lg:py-32;
+}
+
+.section-padding-sm {
+  @apply py-8 md:py-12 lg:py-16;
+}
+
+/* Container */
+.container-premium {
+  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Typography Utilities */
+.text-gradient {
+  @apply bg-gradient-to-r from-stone-900 to-orange-600 bg-clip-text text-transparent;
+}
+
+.text-gradient-gold {
+  @apply bg-gradient-to-r from-yellow-400 to-orange-600 bg-clip-text text-transparent;
+}
+
+/* Card Styles */
+.card-premium {
+  @apply bg-white rounded-xl shadow-2xl hover:shadow-2xl transition-all duration-300 p-6 hover:scale-105 cursor-pointer;
+}
+
+.card-glass {
+  @apply bg-white/40 backdrop-blur-md border border-white/30 rounded-2xl p-6 hover:shadow-lg transition-all duration-300;
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-2;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 hover:shadow-xl;
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  @apply absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce;
+}
+
+/* Image Utilities */
+.image-cover {
+  @apply w-full h-full object-cover;
+}
+
+.image-contain {
+  @apply w-full h-full object-contain;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+}
+
+/* Dark Mode Support (optional) */
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply bg-stone-900 text-amber-50;
+  }
+
+  .glass {
+    @apply bg-stone-800/40 border-stone-700/30;
+  }
+}
