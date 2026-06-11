@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './layout.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton';
 import { businessData, keywords } from '@/lib/data';
 import '@/styles/globals.css';
 
@@ -53,6 +54,7 @@ export default function RootLayout({
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <FloatingWhatsAppButton />
       </body>
     </html>
   );
