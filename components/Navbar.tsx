@@ -3,123 +3,85 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { businessData } from '@/lib/data';
+import { Menu, X, ShoppingBag } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Menu', href: '/menu' },
+    { label: 'Shop', href: '/menu' },
+    { label: 'Collections', href: '/#products' },
     { label: 'About', href: '/about' },
-    { label: 'Reviews', href: '/reviews' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'Support', href: '/contact' },
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-amber-200 shadow-md"
-    >
-      <div className="container-premium flex items-center justify-between h-20">
-        {/* Logo - Premium Brand Mark */}
-        <Link href="/" className="flex items-center gap-3 group hover:opacity-80 transition-opacity duration-300">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition-shadow"
-          >
+    <nav className="fixed left-0 right-0 top-0 z-50 border-b border-black/10 bg-white/95 backdrop-blur-sm">
+      <div className="container-premium flex h-20 items-center justify-between gap-6">
+        <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-75">
+          <div className="relative h-10 w-10 overflow-hidden border border-black/10 bg-white">
             <Image
               src="/logo.png"
               alt="Zion Cakes and Bites"
               fill
               className="object-cover"
-              priority
             />
-          </motion.div>
-          <div className="hidden sm:block">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              <h1 className="text-base font-bold text-stone-900" style={{ fontFamily: 'Montserrat' }}>Zion</h1>
-              <p className="text-xs font-semibold text-orange-600 tracking-wide" style={{ fontFamily: 'Roboto' }}>CAKES & BITES</p>
-            </motion.div>
+          </div>
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-black">Zion</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-neutral-500">
+              Cakes & Bites
+            </p>
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden items-center gap-10 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium text-stone-700 hover:text-orange-600 transition-colors relative group"
+              className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-600 transition-colors hover:text-black"
             >
               {item.label}
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 group-hover:w-full transition-all duration-300" />
             </Link>
           ))}
         </div>
 
-        {/* CTA Button */}
-        <div className="hidden sm:flex items-center gap-4">
-          <a
-            href={businessData.contact.whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white text-sm font-semibold rounded-lg hover:shadow-glow hover:scale-105 transition-all duration-300"
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            aria-label="Cart"
+            className="inline-flex h-10 w-10 items-center justify-center border border-black/10 text-black transition-colors hover:bg-black hover:text-white"
           >
-            <Phone className="w-4 h-4" />
-            Order Now
-          </a>
-        </div>
+            <ShoppingBag className="h-4 w-4" />
+          </button>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 hover:bg-amber-100 rounded-lg transition-colors"
-        >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="inline-flex h-10 w-10 items-center justify-center border border-black/10 text-black transition-colors hover:bg-black hover:text-white md:hidden"
+            aria-label="Open menu"
+          >
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Navigation */}
       {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-amber-50 border-t border-amber-200"
-        >
-          <div className="container-premium py-4 space-y-3">
+        <div className="border-t border-black/10 bg-white md:hidden">
+          <div className="container-premium space-y-2 py-4">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="block px-4 py-2.5 text-stone-700 font-medium hover:bg-amber-200 rounded-lg transition-colors"
+                className="block px-0 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-700 transition-colors hover:text-black"
               >
                 {item.label}
               </Link>
             ))}
-            <a
-              href={businessData.contact.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block px-4 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:shadow-glow transition-all text-center"
-              onClick={() => setIsOpen(false)}
-            >
-              Order Now
-            </a>
           </div>
-        </motion.div>
+        </div>
       )}
-    </motion.nav>
+    </nav>
   );
 }

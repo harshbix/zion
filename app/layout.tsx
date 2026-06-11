@@ -2,18 +2,19 @@ import type { Metadata } from 'next';
 import './layout.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import FloatingWhatsAppButton from '@/components/FloatingWhatsAppButton';
-import { businessData, keywords } from '@/lib/data';
+import { keywords } from '@/lib/data';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Zion Cakes and Bites | Premium Bakery in Mbeya, Tanzania',
+  metadataBase: new URL('https://zioncakesandbites.co.tz'),
+  title: 'Zion | Premium Cakes and Bites in Mbeya',
   description:
-    'Experience freshly baked cakes, juices, and local Tanzanian cuisine in Mbeya. Premium quality, affordable prices, 4.0★ rated restaurant.',
+    'Minimal, premium cakes and bites crafted for quick browsing and effortless ordering in Mbeya.',
   keywords: keywords.join(', '),
   openGraph: {
-    title: 'Zion Cakes and Bites',
-    description: businessData.description,
+    title: 'Zion | Premium Cakes and Bites in Mbeya',
+    description:
+      'Minimal, premium cakes and bites crafted for quick browsing and effortless ordering in Mbeya.',
     url: 'https://zioncakesandbites.co.tz',
     type: 'website',
     images: [
@@ -27,8 +28,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zion Cakes and Bites',
-    description: businessData.description,
+    title: 'Zion | Premium Cakes and Bites in Mbeya',
+    description:
+      'Minimal, premium cakes and bites crafted for quick browsing and effortless ordering in Mbeya.',
     images: ['/logo.png'],
   },
   robots: {
@@ -50,11 +52,10 @@ export default function RootLayout({
         {metadata.description && <meta name="description" content={metadata.description} />}
         <link rel="canonical" href="https://zioncakesandbites.co.tz" />
       </head>
-      <body>
+      <body className="bg-white text-neutral-950">
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
-        <FloatingWhatsAppButton />
       </body>
     </html>
   );
