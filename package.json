@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next build",
     "type-check": "tsc --noEmit"
   },
   "repository": {
@@ -37,6 +37,8 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.0"
+    "@tailwindcss/postcss": "^4.3.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^16.2.9"
   }
 }

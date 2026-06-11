@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { keywords } from '@/lib/data';
 import '@/styles/globals.css';
+import { CartProvider } from '@/lib/cart-context';
+import { OrderProvider } from '@/lib/order-context';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://zioncakesandbites.co.tz'),
@@ -53,10 +55,15 @@ export default function RootLayout({
         <link rel="canonical" href="https://zioncakesandbites.co.tz" />
       </head>
       <body className="bg-white text-neutral-950">
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <OrderProvider>
+          <CartProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </CartProvider>
+        </OrderProvider>
       </body>
     </html>
   );
 }
+

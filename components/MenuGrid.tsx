@@ -155,7 +155,7 @@ export default function MenuGrid() {
                       className="text-2xl font-black text-orange-600"
                       style={{ fontFamily: 'Montserrat' }}
                     >
-                      {item.price}
+                      {item.priceString}
                     </p>
                     <motion.div whileHover={{ scale: 1.2, rotate: 10 }} whileTap={{ scale: 0.9 }}>
                       <ShoppingBag className="w-6 h-6 text-orange-600 group-hover:text-orange-700 transition-colors" />
