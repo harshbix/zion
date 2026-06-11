@@ -53,7 +53,7 @@ export default function HeroSectionNew() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-6 leading-tight"
           style={{
-            fontFamily: 'Playfair Display',
+            fontFamily: 'Montserrat',
             letterSpacing: '-0.03em',
             textShadow: '0 4px 20px rgba(0,0,0,0.3)',
           }}

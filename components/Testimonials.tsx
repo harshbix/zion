@@ -51,7 +51,7 @@ export default function Testimonials() {
 
           <h2
             className="text-5xl md:text-6xl font-black text-stone-900 mb-6 mt-4 leading-tight"
-            style={{ fontFamily: 'Playfair Display', letterSpacing: '-0.02em' }}
+            style={{ fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}
           >
             Loved by {stats.total}+ Customers
           </h2>

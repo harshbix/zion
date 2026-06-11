@@ -34,7 +34,7 @@ body {
 
 /* Typography Editorial Settings */
 .font-serif-luxury {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .font-sans-luxury {
@@ -42,7 +42,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Montserrat', sans-serif;
   line-height: 1.15;
   letter-spacing: -0.02em;
 }

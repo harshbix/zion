@@ -6,8 +6,8 @@ export const businessData = {
     region: 'Tanzania',
     landmark: 'Near Mbeya Referral Hospital, Forest Area',
     address: 'Mbeya CBD, Forest Area, Tanzania',
-    lat: -8.9,
-    lng: 35.4,
+    lat: -8.9119495,
+    lng: 33.4468727,
   },
   contact: {
     phone: '+255 789 123 456',

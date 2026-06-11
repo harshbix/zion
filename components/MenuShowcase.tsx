@@ -34,7 +34,7 @@ export default function MenuShowcase() {
           </motion.div>
           <h2
             className="text-5xl md:text-6xl font-black text-stone-900 mb-6 leading-tight"
-            style={{ fontFamily: 'Playfair Display', letterSpacing: '-0.02em' }}
+            style={{ fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}
           >
             Handpicked Favorites
           </h2>

@@ -33,7 +33,7 @@ export default function AboutSection() {
           </motion.div>
           <h2
             className="text-5xl md:text-6xl font-black text-stone-900 mb-6 leading-tight"
-            style={{ fontFamily: 'Playfair Display', letterSpacing: '-0.02em' }}
+            style={{ fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}
           >
             {aboutContent.title}
           </h2>

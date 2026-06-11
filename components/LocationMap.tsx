@@ -111,9 +111,7 @@ export default function LocationMap() {
                 style={{ border: 0 }}
                 loading="lazy"
                 allowFullScreen
-                src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3938.7462451769227!2d${businessData.location.lng}!3d${businessData.location.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1sZion%20Cakes%20and%20Bites!2s${encodeURIComponent(
-                  businessData.location.address
-                )}`}
+                src={`https://maps.google.com/maps?q=${businessData.location.lat},${businessData.location.lng}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
               />
             </div>
           </motion.div>

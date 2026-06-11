@@ -96,7 +96,7 @@ export default function HeroSection() {
           <motion.div variants={itemVariants} className="mb-8">
             <h1
               className="text-6xl md:text-7xl lg:text-8xl font-black text-stone-900 leading-none mb-4"
-              style={{ fontFamily: 'Playfair Display', letterSpacing: '-0.02em' }}
+              style={{ fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}
             >
               <motion.span
                 initial={{ opacity: 0, y: 50 }}

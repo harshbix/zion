@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Phone, Clock } from 'lucide-react';
 import { WHATSAPP_URLS } from '@/lib/whatsapp';
 import Link from 'next/link';
+import { businessData } from '@/lib/data';
 
 export default function LocationSection() {
   return (
@@ -26,7 +27,7 @@ export default function LocationSection() {
           <h2
             className="text-5xl md:text-6xl font-black text-amber-900 mb-4"
             style={{
-              fontFamily: 'Playfair Display',
+              fontFamily: 'Montserrat',
               letterSpacing: '-0.03em',
             }}
           >
@@ -136,7 +137,7 @@ export default function LocationSection() {
           >
             <div className="relative h-96 md:h-full min-h-96 rounded-xl overflow-hidden shadow-lg border border-amber-100/50">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.3157831029236!2d35.38814!3d-8.9!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x184366f7b8f5d4ef%3A0x123!2sMbeya%20Referral%20Hospital!5e0!3m2!1sen!2stz!4v"
+                src={`https://maps.google.com/maps?q=${businessData.location.lat},${businessData.location.lng}&t=&z=16&ie=UTF8&iwloc=&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

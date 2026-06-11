@@ -89,7 +89,7 @@ export default function TrustSection() {
           <h2
             className="text-5xl md:text-6xl font-black text-amber-900 mb-4"
             style={{
-              fontFamily: 'Playfair Display',
+              fontFamily: 'Montserrat',
               letterSpacing: '-0.03em',
             }}
           >
@@ -205,7 +205,7 @@ export default function TrustSection() {
           </p>
           <p
             className="text-2xl font-bold text-amber-900"
-            style={{ fontFamily: 'Playfair Display' }}
+            style={{ fontFamily: 'Montserrat' }}
           >
             Experience the Zion Difference Today
           </p>

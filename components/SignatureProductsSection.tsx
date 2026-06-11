@@ -85,7 +85,7 @@ export default function SignatureProductsSection() {
           <h2
             className="text-5xl md:text-6xl font-black text-amber-900 mb-4"
             style={{
-              fontFamily: 'Playfair Display',
+              fontFamily: 'Montserrat',
               letterSpacing: '-0.03em',
             }}
           >

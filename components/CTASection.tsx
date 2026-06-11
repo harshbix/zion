@@ -37,7 +37,7 @@ export default function CTASection() {
           {/* Premium Main CTA */}
           <motion.h2
             className="text-5xl md:text-6xl lg:text-7xl font-black text-amber-50 mb-8 leading-tight"
-            style={{ fontFamily: 'Playfair Display', letterSpacing: '-0.02em' }}
+            style={{ fontFamily: 'Montserrat', letterSpacing: '-0.02em' }}
           >
             Ready to Experience the
             <br />

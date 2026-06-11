@@ -40,7 +40,7 @@ export default function FinalCTASection() {
           <h2
             className="text-5xl md:text-7xl font-black text-white leading-tight"
             style={{
-              fontFamily: 'Playfair Display',
+              fontFamily: 'Montserrat',
               letterSpacing: '-0.03em',
               textShadow: '0 8px 32px rgba(0,0,0,0.4)',
             }}

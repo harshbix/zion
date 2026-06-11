@@ -62,7 +62,7 @@ export const menuItems: MenuItem[] = [
     priceString: '48,000 TZS',
     category: 'cakes',
     featured: true,
-    image: 'https://images.unsplash.com/photo-1464347601390-25e2842aae8f?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&h=600&fit=crop',
     tags: ['fresh', 'fruity', 'seasonal'],
   },
   {
@@ -72,7 +72,7 @@ export const menuItems: MenuItem[] = [
     price: 38000,
     priceString: '38,000 TZS',
     category: 'cakes',
-    image: 'https://images.unsplash.com/photo-1534766577524-4007180b5349?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?w=600&h=600&fit=crop',
     tags: ['fresh', 'citrus', 'light'],
   },
 
@@ -85,7 +85,7 @@ export const menuItems: MenuItem[] = [
     priceString: '8,000 TZS',
     category: 'juices',
     featured: true,
-    image: 'https://images.unsplash.com/photo-1546173152-fd1adac65050?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1716441392930-b4daa288266a?w=600&h=600&fit=crop',
     tags: ['tropical', 'fresh', 'signature'],
   },
   {
@@ -159,7 +159,7 @@ export const menuItems: MenuItem[] = [
     price: 18000,
     priceString: '18,000 TZS',
     category: 'meals',
-    image: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=600&h=600&fit=crop',
     tags: ['traditional', 'local', 'comfort'],
   },
   {
@@ -169,7 +169,7 @@ export const menuItems: MenuItem[] = [
     price: 15000,
     priceString: '15,000 TZS',
     category: 'meals',
-    image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&h=600&fit=crop',
     tags: ['vegetarian', 'local', 'healthy'],
   },
   {
@@ -224,7 +224,7 @@ export const menuItems: MenuItem[] = [
     price: 10000,
     priceString: '10,000 TZS',
     category: 'snacks',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&h=600&fit=crop',
     tags: ['bread', 'cheese', 'savory'],
   },
   {
@@ -235,7 +235,7 @@ export const menuItems: MenuItem[] = [
     priceString: '8,000 TZS',
     category: 'snacks',
     featured: true,
-    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=600&h=600&fit=crop',
     tags: ['pastry', 'chocolate', 'breakfast'],
   },
   {
@@ -245,7 +245,7 @@ export const menuItems: MenuItem[] = [
     price: 11000,
     priceString: '11,000 TZS',
     category: 'snacks',
-    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=600&h=600&fit=crop',
     tags: ['vegetarian', 'crispy', 'light'],
   },
   {

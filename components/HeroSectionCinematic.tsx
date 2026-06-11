@@ -59,7 +59,7 @@ export default function HeroSectionCinematic() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
           style={{
-            fontFamily: 'Playfair Display',
+            fontFamily: 'Montserrat',
             letterSpacing: '-0.03em',
             textShadow: '0 8px 32px rgba(0,0,0,0.4)',
           }}
@@ -74,7 +74,7 @@ export default function HeroSectionCinematic() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="text-2xl md:text-4xl text-amber-200 mb-8 font-light"
           style={{
-            fontFamily: 'Playfair Display',
+            fontFamily: 'Montserrat',
             letterSpacing: '-0.01em',
           }}
         >
