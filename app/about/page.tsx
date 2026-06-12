@@ -34,10 +34,10 @@ export default function AboutPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             ZION HERITAGE
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-none">
+          <h1 className="font-sans-luxury text-stone-900 leading-none text-5xl md:text-6xl font-black">
             We believe in honest baking and warm hospitality.
           </h1>
-          <p className="text-stone-500 font-serif-luxury text-lg md:text-xl leading-relaxed italic pt-4 border-t border-stone-200/60 mt-6">
+          <p className="text-stone-500 font-sans-luxury text-lg md:text-xl leading-relaxed italic pt-4 border-t border-stone-200/60 mt-6">
             "Taste is not merely a combination of sugar and flour. It is the texture of fresh-churned butter, the warmth of acacia coal, and the anticipation of celebration."
           </p>
         </div>
@@ -55,7 +55,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="space-y-6">
-            <h2 className="font-serif-luxury text-stone-900 leading-tight">
+            <h2 className="font-sans-luxury text-stone-900 leading-tight text-3xl md:text-4xl font-bold">
               Honest Ingredients. Fresh Beginnings.
             </h2>
             <p className="text-stone-600 text-sm leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -81,7 +81,7 @@ export default function AboutPage() {
             <span className="font-sans-luxury text-[10px] font-black text-stone-500 uppercase tracking-widest">
               OUR FOUNDING PILLARS
             </span>
-            <h2 className="font-serif-luxury text-stone-900">
+            <h2 className="font-sans-luxury text-stone-900 text-3xl md:text-4xl font-bold">
               The Craft Philosophy
             </h2>
           </div>
@@ -117,7 +117,7 @@ export default function AboutPage() {
             <span className="font-sans-luxury text-[10px] font-black text-stone-500 uppercase tracking-widest">
               CHRONOLOGY
             </span>
-            <h2 className="font-serif-luxury text-stone-900 mt-2">
+            <h2 className="font-sans-luxury text-stone-900 mt-2 text-3xl md:text-4xl font-bold">
               Our Journey
             </h2>
           </div>
@@ -128,7 +128,7 @@ export default function AboutPage() {
                 <span className="font-sans-luxury text-xl font-black text-amber-600">
                   {m.year}
                 </span>
-                <h3 className="font-serif-luxury text-lg font-bold text-stone-950">
+                <h3 className="font-sans-luxury text-lg font-bold text-stone-950">
                   {m.title}
                 </h3>
                 <p className="text-stone-500 text-xs leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -145,7 +145,7 @@ export default function AboutPage() {
             <span className="font-sans-luxury text-[10px] font-black text-stone-500 uppercase tracking-widest">
               PEOPLE
             </span>
-            <h2 className="font-serif-luxury text-stone-900">
+            <h2 className="font-sans-luxury text-stone-900 text-3xl md:text-4xl font-bold">
               The Culinary Artisans
             </h2>
           </div>
@@ -159,7 +159,7 @@ export default function AboutPage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-serif-luxury text-xl font-bold text-stone-900">
+                  <h3 className="font-sans-luxury text-xl font-bold text-stone-900">
                     {member.name}
                   </h3>
                   <p className="font-sans-luxury text-[9px] font-bold text-amber-700 uppercase tracking-widest mt-1">

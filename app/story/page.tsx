@@ -34,10 +34,10 @@ export default function StoryPage() {
         <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
           CRAFT NARRATIVE
         </span>
-        <h1 className="font-serif-luxury text-stone-900 leading-none">
+        <h1 className="font-sans-luxury text-stone-900 leading-none text-5xl md:text-6xl font-black">
           How a Zion Moment is Baked.
         </h1>
-        <p className="text-stone-500 font-serif-luxury text-lg max-w-2xl mx-auto leading-relaxed italic">
+        <p className="text-stone-500 font-sans-luxury text-lg max-w-2xl mx-auto leading-relaxed italic">
           "Patience is our primary ingredient. We believe quality requires time, deliberate motion, and respect for nature's elements."
         </p>
       </section>
@@ -59,7 +59,7 @@ export default function StoryPage() {
                 <span className="font-sans-luxury text-xs font-black text-amber-600 tracking-widest uppercase">
                   {ch.label}
                 </span>
-                <h2 className="font-serif-luxury text-stone-900 leading-tight">
+                <h2 className="font-sans-luxury text-stone-900 leading-tight text-3xl md:text-4xl font-bold">
                   {ch.title}
                 </h2>
                 <p className="text-stone-600 text-sm leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -76,7 +76,7 @@ export default function StoryPage() {
 
       {/* Bottom section */}
       <section className="container-premium text-center mt-36 max-w-2xl space-y-6">
-        <h2 className="font-serif-luxury text-stone-900 leading-tight">
+        <h2 className="font-sans-luxury text-stone-900 leading-tight text-4xl md:text-5xl font-bold">
           Ready to experience the craft?
         </h2>
         <p className="text-stone-500 text-xs tracking-wide uppercase font-sans-luxury">

@@ -8,7 +8,7 @@ import { Minus, Plus, Trash2, ArrowLeft, ShoppingBag } from 'lucide-react';
 import { useState } from 'react';
 
 export default function CartPage() {
-  const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, cartTotal, clearCart } = useCart();
   const [orderNotes, setOrderNotes] = useState('');
 
   // Surcharge/shipping cost estimate (simulated)
@@ -21,7 +21,7 @@ export default function CartPage() {
         
         {/* Page Title */}
         <div className="mb-12 border-b border-stone-200/50 pb-6 flex items-baseline justify-between">
-          <h1 className="font-serif-luxury text-stone-900 text-3xl md:text-5xl font-bold">
+          <h1 className="font-sans-luxury text-stone-900 text-3xl md:text-5xl font-bold">
             Shopping Bag
           </h1>
           <Link href="/shop" className="font-sans-luxury text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-2">
@@ -32,7 +32,7 @@ export default function CartPage() {
         {cartItems.length === 0 ? (
           <div className="py-24 text-center space-y-6 bg-white border border-stone-200 p-8">
             <ShoppingBag className="w-12 h-12 text-stone-300 mx-auto" />
-            <h2 className="font-serif-luxury text-2xl font-bold text-stone-900">Your bag is empty</h2>
+            <h2 className="font-sans-luxury text-2xl font-bold text-stone-900">Your bag is empty</h2>
             <p className="text-stone-500 text-xs max-w-xs mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
               Browse our artisan collections to find cakes, pastries, grilled delicacies, and juices.
             </p>
@@ -61,7 +61,7 @@ export default function CartPage() {
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <div className="flex justify-between items-start">
-                          <h3 className="font-serif-luxury text-base font-bold text-stone-950 leading-tight">
+                          <h3 className="font-sans-luxury text-base font-bold text-stone-950 leading-tight">
                             {item.name}
                           </h3>
                           <span className="font-sans-luxury text-sm font-bold text-stone-950">
@@ -151,13 +151,19 @@ export default function CartPage() {
                   </div>
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 space-y-2">
                   <Link
-                    href={`/checkout?notes=${encodeURIComponent(orderNotes)}`}
-                    className="w-full text-center premium-btn-primary h-14 flex items-center justify-center"
+                    href={`/checkout${orderNotes ? `?notes=${encodeURIComponent(orderNotes)}` : ''}`}
+                    className="w-full text-center h-14 flex items-center justify-center bg-stone-950 hover:bg-amber-600 text-white font-sans-luxury text-xs font-bold uppercase tracking-widest transition-colors active:scale-[0.98]"
                   >
-                    PROCEED TO CHECKOUT
+                    Proceed to Checkout
                   </Link>
+                  <button
+                    onClick={clearCart}
+                    className="w-full text-center h-11 flex items-center justify-center border border-stone-200 text-stone-400 hover:text-red-600 hover:border-red-300 font-sans-luxury text-[10px] font-bold uppercase tracking-widest transition-colors active:scale-[0.98]"
+                  >
+                    Clear Cart
+                  </button>
                 </div>
               </div>
 

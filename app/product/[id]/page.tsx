@@ -1,26 +1,102 @@
 'use client';
 
-import { use, useState } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart-context';
+import { useToast } from '@/lib/toast-context';
 import { menuItems } from '@/lib/menu';
 import { formatCurrency } from '@/lib/utils';
-import { Star, ShieldCheck, Truck, RotateCcw, ChevronDown, Plus, Minus, Check } from 'lucide-react';
-import { WHATSAPP_URLS } from '@/lib/whatsapp';
+import { Star, ShieldCheck, Truck, RotateCcw, Plus, Minus } from 'lucide-react';
+
+function ProductDetailsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+      {/* Left Gallery Skeleton */}
+      <div className="lg:col-span-7 space-y-4">
+        <div className="aspect-square w-full skeleton-shimmer border border-stone-200" />
+        <div className="flex gap-4">
+          <div className="w-20 aspect-square skeleton-shimmer" />
+          <div className="w-20 aspect-square skeleton-shimmer" />
+          <div className="w-20 aspect-square skeleton-shimmer" />
+        </div>
+      </div>
+      {/* Right Details Skeleton */}
+      <div className="lg:col-span-5 space-y-6">
+        <div className="space-y-3">
+          <div className="h-3 w-16 skeleton-shimmer" />
+          <div className="h-10 w-3/4 skeleton-shimmer" />
+          <div className="h-4 w-40 skeleton-shimmer" />
+        </div>
+        <div className="h-8 w-32 skeleton-shimmer pt-4 border-t border-stone-100" />
+        <div className="space-y-2 pt-2">
+          <div className="h-4 w-full skeleton-shimmer" />
+          <div className="h-4 w-5/6 skeleton-shimmer" />
+          <div className="h-4 w-4/5 skeleton-shimmer" />
+        </div>
+        <div className="space-y-3 pt-4">
+          <div className="h-3.5 w-24 skeleton-shimmer" />
+          <div className="grid grid-cols-3 gap-2">
+            <div className="h-11 skeleton-shimmer" />
+            <div className="h-11 skeleton-shimmer" />
+            <div className="h-11 skeleton-shimmer" />
+          </div>
+        </div>
+        <div className="flex gap-4 pt-6">
+          <div className="w-28 h-14 skeleton-shimmer" />
+          <div className="flex-1 h-14 skeleton-shimmer" />
+        </div>
+        <div className="h-14 w-full skeleton-shimmer" />
+      </div>
+    </div>
+  );
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { addToCart } = useCart();
+  const toast = useToast();
   const item = menuItems.find((i) => i.id === id);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<{ label: string; priceModifier: number } | null>(null);
+  const [customMessage, setCustomMessage] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState('');
+  const [activeTab, setActiveTab] = useState<'ingredients' | 'process' | 'delivery'>('ingredients');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Initialize size options and images
+  useEffect(() => {
+    if (item) {
+      const initialSizes = item.category === 'cakes'
+        ? [
+            { label: '6 inch (1.2kg)', priceModifier: 0 },
+            { label: '8 inch (2.0kg)', priceModifier: 15000 },
+            { label: '10 inch (3.0kg)', priceModifier: 30000 },
+          ]
+        : [
+            { label: 'Standard Portion', priceModifier: 0 },
+            { label: 'Double/Sharing Size', priceModifier: 8000 },
+          ];
+      setSelectedSize(initialSizes[0]);
+      setActiveImage(item.image);
+    }
+  }, [item]);
 
   // Fallback if item is not found
   if (!item) {
     return (
       <div className="bg-[#FFFBF5] min-h-screen pt-40 pb-24 text-center">
         <div className="container-premium space-y-6">
-          <h1 className="font-serif-luxury text-3xl text-stone-900">Delicacy Not Found</h1>
+          <h1 className="font-sans-luxury text-3xl text-stone-900">Delicacy Not Found</h1>
           <p className="text-stone-500 font-sans-luxury text-xs">The product you are trying to view does not exist or has been retired.</p>
           <Link href="/shop" className="premium-btn-primary">
             Back to Catalog
@@ -30,12 +106,6 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
-  // Related products selection (exclude current item, match category)
-  const crossSells = menuItems
-    .filter((i) => i.category !== item.category)
-    .slice(0, 2);
-
-  // Configuration States
   const sizes = item.category === 'cakes'
     ? [
         { label: '6 inch (1.2kg)', priceModifier: 0 },
@@ -47,11 +117,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         { label: 'Double/Sharing Size', priceModifier: 8000 },
       ];
 
-  const [selectedSize, setSelectedSize] = useState(sizes[0]);
-  const [customMessage, setCustomMessage] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState(item.image);
-  const [activeTab, setActiveTab] = useState<'ingredients' | 'process' | 'delivery'>('ingredients');
+  const crossSells = menuItems
+    .filter((i) => i.category !== item.category)
+    .slice(0, 2);
 
   // Alternative images gallery mock
   const productImages = [
@@ -60,7 +128,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=600&fit=crop',
   ];
 
-  const basePrice = item.price + selectedSize.priceModifier;
+  const currentSize = selectedSize || sizes[0];
+  const basePrice = item.price + currentSize.priceModifier;
 
   const handleAddToBag = () => {
     addToCart(
@@ -71,15 +140,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         priceString: formatCurrency(basePrice),
         image: item.image,
         category: item.category,
-        selectedSize: selectedSize.label,
+        selectedSize: currentSize.label,
         customMessage: customMessage.trim() !== '' ? customMessage : undefined,
       },
       quantity
     );
+    toast.success(`Added ${quantity}x ${item.name} (${currentSize.label}) to your bag.`);
+  };
+
+  const handleAddCrossSell = (cross: typeof menuItems[0]) => {
+    addToCart({
+      id: cross.id,
+      name: cross.name,
+      price: cross.price,
+      priceString: cross.priceString,
+      image: cross.image,
+      category: cross.category,
+    });
+    toast.success(`Added ${cross.name} to your bag.`);
   };
 
   const handleInstantWhatsApp = () => {
-    let text = `Hi! I want to order ${item.name} (${selectedSize.label}) x${quantity}.\n`;
+    let text = `Hi! I want to order ${item.name} (${currentSize.label}) x${quantity}.\n`;
     if (customMessage.trim() !== '') {
       text += `Custom inscription: "${customMessage}"\n`;
     }
@@ -91,7 +173,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="bg-[#FFFBF5] min-h-screen pt-28 pb-24">
+    <div className="bg-[#FFFBF5] min-h-screen pt-28 pb-24 text-stone-800">
       <div className="container-premium">
         
         {/* Breadcrumbs */}
@@ -103,187 +185,194 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           <span className="text-stone-900">{item.name}</span>
         </div>
 
-        {/* Details Split Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          
-          {/* Left Panel: Swappable Image Gallery */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="relative aspect-square overflow-hidden bg-white border border-stone-200 p-2">
-              <div className="relative w-full h-full overflow-hidden">
-                <Image
-                  src={activeImage}
-                  alt={item.name}
-                  fill
-                  priority
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-            </div>
-
-            {/* Thumbnail row */}
-            <div className="flex gap-4">
-              {productImages.map((img, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveImage(img)}
-                  className={`relative w-20 aspect-square overflow-hidden border p-1 bg-white transition-all ${
-                    activeImage === img ? 'border-amber-600 ring-1 ring-amber-600' : 'border-stone-200 opacity-60 hover:opacity-100'
-                  }`}
-                >
-                  <div className="relative w-full h-full">
-                    <Image src={img} alt={`${item.name} view ${index + 1}`} fill className="object-cover" />
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Panel: Configurations & CTAs */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
-            <div className="space-y-6">
-              {/* Product Info */}
-              <div className="space-y-2">
-                <span className="font-sans-luxury text-[10px] font-black text-amber-700 uppercase tracking-[0.25em]">
-                  {item.category}
-                </span>
-                <h1 className="font-serif-luxury text-stone-900 text-3xl md:text-4xl font-bold leading-none">
-                  {item.name}
-                </h1>
-                
-                {/* Rating summary */}
-                <div className="flex items-center gap-1.5 pt-2">
-                  <div className="flex text-amber-500">
-                    <Star className="w-4 h-4 fill-current" />
-                    <Star className="w-4 h-4 fill-current" />
-                    <Star className="w-4 h-4 fill-current" />
-                    <Star className="w-4 h-4 fill-current" />
-                    <Star className="w-4 h-4 fill-current text-stone-300" />
-                  </div>
-                  <span className="text-xs text-stone-500 font-sans-luxury tracking-widest">(4.0 / 82 Reviews)</span>
-                </div>
-              </div>
-
-              {/* Price display */}
-              <div className="border-t border-stone-200/50 pt-5">
-                <p className="font-sans-luxury text-2xl font-black text-stone-900">
-                  {formatCurrency(basePrice)}
-                </p>
-                <p className="text-[10px] text-stone-400 font-sans-luxury tracking-wider uppercase mt-1">
-                  Tax included. Local Mbeya deliveries calculated at step.
-                </p>
-              </div>
-
-              {/* Description */}
-              <p className="text-stone-600 text-sm leading-relaxed" style={{ fontFamily: 'Inter' }}>
-                {item.description}
-              </p>
-
-              {/* Size Selector */}
-              <div className="space-y-3">
-                <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
-                  Select Size Override
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {sizes.map((s) => (
-                    <button
-                      key={s.label}
-                      onClick={() => setSelectedSize(s)}
-                      className={`font-sans-luxury text-[9px] font-bold uppercase tracking-wider p-3.5 border transition-all text-center ${
-                        selectedSize.label === s.label
-                          ? 'bg-stone-900 border-stone-900 text-white shadow-sm'
-                          : 'bg-white border-stone-200 text-stone-700 hover:border-stone-950'
-                      }`}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Inscription Customization (Only Cakes) */}
-              {item.category === 'cakes' && (
-                <div className="space-y-3">
-                  <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
-                    Custom Message on Cake (Engraving)
-                  </h3>
-                  <input
-                    type="text"
-                    placeholder="e.g. Happy Birthday Sarah! (Max 35 chars)"
-                    value={customMessage}
-                    onChange={(e) => setCustomMessage(e.target.value.slice(0, 35))}
-                    className="w-full bg-white border border-stone-200 px-4 py-3 text-xs tracking-wider text-stone-800 placeholder-stone-400 focus:outline-none focus:border-amber-600"
-                    style={{ fontFamily: 'Inter' }}
+        {isLoading ? (
+          <ProductDetailsSkeleton />
+        ) : (
+          /* Details Split Columns */
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            
+            {/* Left Panel: Swappable Image Gallery */}
+            <div className="lg:col-span-7 space-y-4">
+              <div className="relative aspect-square overflow-hidden bg-white border border-stone-200 p-2">
+                <div className="relative w-full h-full overflow-hidden">
+                  <Image
+                    src={activeImage || item.image}
+                    alt={item.name}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 hover:scale-105"
                   />
                 </div>
-              )}
+              </div>
 
-              {/* Quantity Select & Add to Cart Group */}
-              <div className="flex gap-4 items-end pt-2">
-                <div className="space-y-3">
-                  <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
-                    Quantity
-                  </h3>
-                  <div className="flex items-center border border-stone-200 bg-white h-14">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-2 text-stone-600 hover:text-stone-900 transition-colors"
-                    >
-                      <Minus className="w-3 h-3" />
-                    </button>
-                    <span className="px-4 text-sm font-bold font-sans-luxury text-stone-900 min-w-[20px] text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="px-4 py-2 text-stone-600 hover:text-stone-900 transition-colors"
-                    >
-                      <Plus className="w-3 h-3" />
-                    </button>
+              {/* Thumbnail row */}
+              <div className="flex gap-4">
+                {productImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(img)}
+                    className={`relative w-20 aspect-square overflow-hidden border p-1 bg-white transition-all min-h-[44px] ${
+                      activeImage === img ? 'border-amber-600 ring-1 ring-amber-600' : 'border-stone-200 opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <div className="relative w-full h-full">
+                      <Image src={img} alt={`${item.name} view ${index + 1}`} fill sizes="80px" className="object-cover" />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Panel: Configurations & CTAs */}
+            <div className="lg:col-span-5 flex flex-col justify-between">
+              <div className="space-y-6">
+                {/* Product Info */}
+                <div className="space-y-2">
+                  <span className="font-sans-luxury text-[10px] font-black text-amber-700 uppercase tracking-[0.25em]">
+                    {item.category}
+                  </span>
+                  <h1 className="font-sans-luxury text-stone-900 text-3xl md:text-4xl font-bold leading-none">
+                    {item.name}
+                  </h1>
+                  
+                  {/* Rating summary */}
+                  <div className="flex items-center gap-1.5 pt-2">
+                    <div className="flex text-amber-500">
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current text-stone-300" />
+                    </div>
+                    <span className="text-xs text-stone-500 font-sans-luxury tracking-widest">(4.0 / 82 Reviews)</span>
                   </div>
                 </div>
 
+                {/* Price display */}
+                <div className="border-t border-stone-200/50 pt-5">
+                  <p className="font-sans-luxury text-2xl font-black text-stone-900">
+                    {formatCurrency(basePrice)}
+                  </p>
+                  <p className="text-[10px] text-stone-400 font-sans-luxury tracking-wider uppercase mt-1">
+                    Tax included. Local Mbeya deliveries calculated at step.
+                  </p>
+                </div>
+
+                {/* Description */}
+                <p className="text-stone-600 text-sm leading-relaxed" style={{ fontFamily: 'Inter' }}>
+                  {item.description}
+                </p>
+
+                {/* Size Selector (44px target) */}
+                <div className="space-y-3">
+                  <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
+                    Select Size Override
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {sizes.map((s) => (
+                      <button
+                        key={s.label}
+                        onClick={() => setSelectedSize(s)}
+                        className={`font-sans-luxury text-[9px] font-bold uppercase tracking-wider h-11 flex items-center justify-center border transition-all text-center active:scale-[0.98] ${
+                          currentSize.label === s.label
+                            ? 'bg-stone-900 border-stone-900 text-white shadow-sm'
+                            : 'bg-white border-stone-200 text-stone-700 hover:border-stone-950'
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Inscription Customization (Only Cakes) */}
+                {item.category === 'cakes' && (
+                  <div className="space-y-3">
+                    <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
+                      Custom Message on Cake (Engraving)
+                    </h3>
+                    <input
+                      type="text"
+                      placeholder="e.g. Happy Birthday Sarah! (Max 35 chars)"
+                      value={customMessage}
+                      onChange={(e) => setCustomMessage(e.target.value.slice(0, 35))}
+                      className="w-full bg-white border border-stone-200 px-4 h-11 text-xs tracking-wider text-stone-800 placeholder-stone-400 focus:outline-none focus:border-amber-600 focus:ring-4 focus:ring-amber-600/10"
+                      style={{ fontFamily: 'Inter' }}
+                    />
+                  </div>
+                )}
+
+                {/* Quantity Select & Add to Cart Group (44px/56px target) */}
+                <div className="flex gap-4 items-end pt-2">
+                  <div className="space-y-3">
+                    <h3 className="font-sans-luxury text-[10px] font-black uppercase tracking-widest text-stone-500">
+                      Quantity
+                    </h3>
+                    <div className="flex items-center border border-stone-200 bg-white h-14">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="w-14 h-full flex items-center justify-center text-stone-600 hover:text-stone-950 active:bg-stone-50 transition-colors"
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+                      <span className="px-5 text-sm font-bold font-sans-luxury text-stone-900 min-w-[32px] text-center select-none">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-14 h-full flex items-center justify-center text-stone-600 hover:text-stone-950 active:bg-stone-50 transition-colors"
+                        aria-label="Increase quantity"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleAddToBag}
+                    className="flex-1 bg-stone-950 text-white font-sans-luxury text-[10px] font-bold uppercase tracking-widest h-14 hover:bg-amber-600 transition-colors active:scale-[0.98]"
+                  >
+                    ADD TO BAG
+                  </button>
+                </div>
+
+                {/* WhatsApp Quick Link */}
                 <button
-                  onClick={handleAddToBag}
-                  className="flex-1 bg-stone-950 text-white font-sans-luxury text-[10px] font-bold uppercase tracking-widest h-14 hover:bg-amber-600 transition-colors"
+                  onClick={handleInstantWhatsApp}
+                  className="w-full border border-green-600 text-green-600 hover:bg-green-600/5 font-sans-luxury text-[10px] font-bold uppercase tracking-widest h-14 transition-colors active:scale-[0.98]"
                 >
-                  ADD TO BAG
+                  Instant Order on WhatsApp
                 </button>
               </div>
 
-              {/* WhatsApp Quick Link */}
-              <button
-                onClick={handleInstantWhatsApp}
-                className="w-full border border-green-600 text-green-600 hover:bg-green-600/5 font-sans-luxury text-[10px] font-bold uppercase tracking-widest h-14 transition-colors"
-              >
-                Instant Order on WhatsApp
-              </button>
-            </div>
+              {/* Trust Badges */}
+              <div className="grid grid-cols-3 gap-2 border-t border-stone-200/50 mt-8 pt-6 text-[10px] font-sans-luxury text-stone-500 uppercase tracking-widest text-center">
+                <div className="flex flex-col items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-amber-600" />
+                  <span>100% Organic</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Truck className="w-5 h-5 text-amber-600" />
+                  <span>Express Mbeya</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <RotateCcw className="w-5 h-5 text-amber-600" />
+                  <span>Fresh Guarantee</span>
+                </div>
+              </div>
 
-            {/* Trust Badges */}
-            <div className="grid grid-cols-3 gap-2 border-t border-stone-200/50 mt-8 pt-6 text-[10px] font-sans-luxury text-stone-500 uppercase tracking-widest text-center">
-              <div className="flex flex-col items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-amber-600" />
-                <span>100% Organic</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <Truck className="w-5 h-5 text-amber-600" />
-                <span>Express Mbeya</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <RotateCcw className="w-5 h-5 text-amber-600" />
-                <span>Fresh Guarantee</span>
-              </div>
             </div>
-
           </div>
-        </div>
+        )}
 
         {/* Collapsible details accordion tabs */}
         <div className="border-t border-stone-200 mt-20 pt-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
             
             {/* Tabs Trigger List */}
-            <div className="lg:col-span-4 flex flex-row lg:flex-col gap-2 border-b lg:border-b-0 border-stone-200 lg:border-r border-stone-200 pb-4 lg:pb-0 lg:pr-6">
+            <div className="lg:col-span-4 flex flex-row lg:flex-col gap-2 border-b lg:border-b-0 border-stone-200 lg:border-r border-stone-200 pb-4 lg:pb-0 lg:pr-6 overflow-x-auto sm:overflow-x-visible">
               {[
                 { id: 'ingredients', label: 'Ingredients & Sourcing' },
                 { id: 'process', label: 'Baking & Kitchen Process' },
@@ -292,7 +381,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`font-sans-luxury text-[11px] font-bold uppercase tracking-wider text-left px-4 py-3.5 border-b-2 lg:border-b-0 lg:border-l-2 transition-all ${
+                  className={`font-sans-luxury text-[11px] font-bold uppercase tracking-wider text-left px-4 py-3.5 border-b-2 lg:border-b-0 lg:border-l-2 transition-all min-h-[44px] whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'border-amber-600 text-amber-700 font-black'
                       : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -360,7 +449,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Cross-sells Section: Complete the Moment */}
         <div className="border-t border-stone-200 mt-20 pt-16">
-          <h2 className="font-serif-luxury text-stone-900 text-2xl font-bold mb-10 text-center">
+          <h2 className="font-sans-luxury text-stone-900 text-2xl font-bold mb-10 text-center">
             Complete the Moment
           </h2>
 
@@ -368,25 +457,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             {crossSells.map((cross) => (
               <div key={cross.id} className="bg-white border border-stone-200 p-4 flex gap-4 items-center">
                 <div className="relative w-24 aspect-square overflow-hidden bg-stone-50">
-                  <Image src={cross.image} alt={cross.name} fill className="object-cover" />
+                  <Image src={cross.image} alt={cross.name} fill sizes="96px" className="object-cover" />
                 </div>
                 <div className="flex-1 space-y-1">
                   <span className="font-sans-luxury text-[8px] font-bold text-amber-700 uppercase tracking-widest">{cross.category}</span>
-                  <h4 className="font-serif-luxury text-base font-bold text-stone-950">{cross.name}</h4>
+                  <h4 className="font-sans-luxury text-base font-bold text-stone-950">{cross.name}</h4>
                   <p className="font-sans-luxury text-xs font-bold text-stone-900">{cross.priceString}</p>
                 </div>
                 <button
-                  onClick={() =>
-                    addToCart({
-                      id: cross.id,
-                      name: cross.name,
-                      price: cross.price,
-                      priceString: cross.priceString,
-                      image: cross.image,
-                      category: cross.category,
-                    })
-                  }
-                  className="font-sans-luxury text-[9px] font-bold uppercase tracking-widest bg-stone-950 text-white px-4 py-3.5 hover:bg-amber-600 transition-colors"
+                  onClick={() => handleAddCrossSell(cross)}
+                  className="font-sans-luxury text-[9px] font-bold uppercase tracking-widest bg-stone-950 text-white px-4 py-3.5 hover:bg-amber-600 transition-colors h-11 flex items-center justify-center active:scale-[0.98] select-none"
                 >
                   Add
                 </button>

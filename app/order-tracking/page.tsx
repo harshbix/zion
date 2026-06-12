@@ -61,7 +61,7 @@ export default function OrderTrackingPage() {
         {/* Page Header */}
         <div className="mb-12 border-b border-stone-200/50 pb-6 flex flex-col md:flex-row md:items-baseline md:justify-between gap-4">
           <div>
-            <h1 className="font-serif-luxury text-stone-900 text-3xl md:text-5xl font-bold">
+            <h1 className="font-sans-luxury text-stone-900 text-3xl md:text-5xl font-bold">
               Order Tracking
             </h1>
             <p className="text-stone-500 font-sans-luxury text-xs tracking-wider uppercase mt-1">
@@ -79,7 +79,7 @@ export default function OrderTrackingPage() {
           <div className="bg-white border border-stone-200 p-8 space-y-6 max-w-xl mx-auto">
             <div className="text-center space-y-2">
               <Package className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="font-serif-luxury text-xl font-bold text-stone-900">Track an Order</h3>
+              <h3 className="font-sans-luxury text-xl font-bold text-stone-900">Track an Order</h3>
               <p className="text-stone-500 text-xs leading-relaxed max-w-xs mx-auto" style={{ fontFamily: 'Inter' }}>
                 Enter the Order ID from your receipt (e.g. <strong>ZION-9812</strong>) or choose from past portal orders.
               </p>
@@ -176,7 +176,7 @@ export default function OrderTrackingPage() {
 
                       {/* Content details */}
                       <div className="space-y-1">
-                        <h3 className={`font-serif-luxury text-lg font-bold transition-colors ${
+                        <h3 className={`font-sans-luxury text-lg font-bold transition-colors ${
                           isActive ? 'text-amber-700' : isCompleted ? 'text-stone-900' : 'text-stone-400'
                         }`}>
                           {st.label}

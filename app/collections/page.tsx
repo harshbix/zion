@@ -76,7 +76,7 @@ export default function CollectionsPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             CURATED SETS
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 leading-tight text-5xl md:text-6xl font-black">
             Gourmet Collections
           </h1>
           <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -109,7 +109,7 @@ export default function CollectionsPage() {
                     <Gift className="w-4 h-4" />
                     <span className="font-sans-luxury text-[9px] font-bold uppercase tracking-widest">CURATED HAMPER BUNDLE</span>
                   </div>
-                  <h2 className="font-serif-luxury text-stone-900 text-3xl font-bold leading-tight">
+                  <h2 className="font-sans-luxury text-stone-900 text-3xl font-bold leading-tight">
                     {col.name}
                   </h2>
                   <p className="text-stone-600 text-sm leading-relaxed" style={{ fontFamily: 'Inter' }}>

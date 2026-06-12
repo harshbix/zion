@@ -21,7 +21,7 @@ export default function AccountPage() {
         
         {/* Page Title */}
         <div className="mb-12 border-b border-stone-200/50 pb-6">
-          <h1 className="font-serif-luxury text-stone-900 text-3xl md:text-5xl font-bold">
+          <h1 className="font-sans-luxury text-stone-900 text-3xl md:text-5xl font-bold">
             Customer Portal
           </h1>
           <p className="text-stone-500 font-sans-luxury text-xs tracking-wider uppercase mt-1">
@@ -41,7 +41,7 @@ export default function AccountPage() {
                   <User className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-serif-luxury text-base font-bold text-stone-900 leading-tight">John Doe</h3>
+                  <h3 className="font-sans-luxury text-base font-bold text-stone-900 leading-tight">John Doe</h3>
                   <span className="text-[10px] font-sans-luxury text-stone-400 uppercase tracking-wider">Premium Member</span>
                 </div>
               </div>
@@ -74,14 +74,14 @@ export default function AccountPage() {
 
           {/* Right Panel: Order History (col-span-8) */}
           <div className="lg:col-span-8 bg-white border border-stone-200 p-6 md:p-8">
-            <h2 className="font-serif-luxury text-xl font-bold text-stone-950 border-b border-stone-100 pb-4 mb-6">
+            <h2 className="font-sans-luxury text-xl font-bold text-stone-950 border-b border-stone-100 pb-4 mb-6">
               Order History & Statuses
             </h2>
 
             {orders.length === 0 ? (
               <div className="py-16 text-center space-y-4">
                 <Package className="w-10 h-10 text-stone-300 mx-auto" />
-                <p className="font-serif-luxury text-base italic text-stone-500">You have no order history yet.</p>
+                <p className="font-sans-luxury text-base italic text-stone-500">You have no order history yet.</p>
                 <Link href="/shop" className="premium-btn-primary">Shop Now</Link>
               </div>
             ) : (

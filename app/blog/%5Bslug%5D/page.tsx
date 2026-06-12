@@ -4,7 +4,7 @@ import { use } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { blogPosts } from '../page';
+import { blogPosts } from '@/lib/blog';
 import { Calendar, Clock, ArrowLeft, Heart } from 'lucide-react';
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -15,7 +15,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
     return (
       <div className="bg-[#FFFBF5] min-h-screen pt-40 pb-24 text-center">
         <div className="container-premium space-y-6">
-          <h1 className="font-serif-luxury text-3xl text-stone-900">Article Not Found</h1>
+          <h1 className="font-sans-luxury text-3xl text-stone-900">Article Not Found</h1>
           <p className="text-stone-500 font-sans-luxury text-xs">The post you are searching for does not exist or has been deleted.</p>
           <Link href="/blog" className="premium-btn-primary">
             Back to Journal
@@ -41,7 +41,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           <span className="bg-amber-600/90 text-white font-sans-luxury text-[9px] font-bold tracking-widest uppercase px-3 py-1.5 inline-block">
             {post.category}
           </span>
-          <h1 className="font-serif-luxury text-stone-900 text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
             {post.title}
           </h1>
           <div className="flex items-center gap-6 text-[10px] font-sans-luxury text-stone-400 uppercase tracking-widest border-y border-stone-200/50 py-4">
@@ -59,21 +59,21 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
         </div>
 
         {/* Editorial Body Text */}
-        <div className="prose prose-stone max-w-none text-stone-600 text-sm md:text-base leading-relaxed space-y-6 font-serif" style={{ fontFamily: 'Georgia, serif' }}>
-          <p className="text-stone-900 font-serif-luxury text-lg md:text-xl font-bold leading-relaxed italic border-l-4 border-amber-600 pl-6 my-8">
+        <div className="max-w-none text-stone-600 text-sm md:text-base leading-relaxed space-y-6" style={{ fontFamily: 'Inter' }}>
+          <p className="text-stone-900 font-sans-luxury text-lg md:text-xl font-bold leading-relaxed italic border-l-4 border-amber-600 pl-6 my-8">
             {post.excerpt}
           </p>
 
           <p>The culinary philosophy of Zion Cakes and Bites has always been rooted in origin. We believe the local microclimates of southern Tanzania possess distinct, unexamined terroir. In this article, we trace the chemistry and heritage that sets our bakeries apart, documenting the ingredients and methods that cultivate pure, memorable appetites.</p>
 
-          <h3 className="font-serif-luxury text-stone-900 text-xl font-bold pt-4">Respect for Volcanic Soil</h3>
+          <h3 className="font-sans-luxury text-stone-900 text-xl font-bold pt-4">Respect for Volcanic Soil</h3>
           <p>Mbeya is defined by its geological history. Volcanic ash soils around Mount Rungwe are loaded with minerals—potassium, magnesium, and phosphorus. When coffee bushes, tropical trees, and vanilla bean orchids grow in this density, they develop deep root systems that draw up clean regional compounds. Our pastry chefs directly collaborate with local Mbeya smallholders to pick berries and squeeze mangoes at peak ripeness, introducing a volcanic volcanic acidity and rich caramel sweetness that sets our items apart.</p>
 
-          <blockquote className="font-serif-luxury text-stone-950 text-2xl font-semibold leading-relaxed italic text-center max-w-2xl mx-auto my-12">
+          <blockquote className="font-sans-luxury text-stone-950 text-2xl font-semibold leading-relaxed italic text-center max-w-2xl mx-auto my-12">
             "Artisanal baking is the chemistry of patience. We let nature do the heavy lifting, giving raw local ingredients the time they require."
           </blockquote>
 
-          <h3 className="font-serif-luxury text-stone-900 text-xl font-bold pt-4">Fermenting Over Speed-Proofing</h3>
+          <h3 className="font-sans-luxury text-stone-900 text-xl font-bold pt-4">Fermenting Over Speed-Proofing</h3>
           <p>Typical commercial setups prioritize fast throughput, relying on dough additives and chemical softeners to accelerate baking. At Zion, we choose slow, cold fermentation. We fold our brioche doughs with high-fat churned butter and allow them to rest in controlled chilling chambers for up to 48 hours. This unhurried method allows wild yeast cultures to break down gluten chains slowly, generating subtle organic acids that give our bread rolls and croissants their airy honeycomb crumb and digestible texture.</p>
 
           <p>This attention to process ensures that when you order a Zion pastry, you are experiencing the work of hands, clean water, fine flour, and patient time. We are proud to keep this slow culinary heritage alive in the heart of Mbeya.</p>

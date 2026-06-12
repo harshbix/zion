@@ -72,7 +72,7 @@ export default function FAQPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             HAVE QUESTIONS?
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 leading-tight text-5xl md:text-6xl font-black">
             Frequently Answered
           </h1>
           <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -112,7 +112,7 @@ export default function FAQPage() {
                 >
                   <div className="flex items-center gap-3">
                     <HelpCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                    <h3 className="font-serif-luxury text-base font-bold text-stone-950">
+                    <h3 className="font-sans-luxury text-base font-bold text-stone-950">
                       {faq.question}
                     </h3>
                   </div>
@@ -142,7 +142,7 @@ export default function FAQPage() {
         {/* Support Callout */}
         <div className="mt-20 border border-stone-200 bg-white p-8 text-center space-y-4 max-w-2xl mx-auto">
           <MessageSquare className="w-8 h-8 text-amber-600 mx-auto" />
-          <h3 className="font-serif-luxury text-xl font-bold text-stone-900">Still seeking answers?</h3>
+          <h3 className="font-sans-luxury text-xl font-bold text-stone-900">Still seeking answers?</h3>
           <p className="text-stone-500 text-xs max-w-md mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
             Our support desk responds instantly on WhatsApp. Ask about wedding custom quotes, special catering services, or modify orders in progress.
           </p>

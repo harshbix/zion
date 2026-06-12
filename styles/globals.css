@@ -47,18 +47,6 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
-h1 {
-  @apply text-5xl md:text-7xl lg:text-8xl font-black;
-}
-
-h2 {
-  @apply text-3xl md:text-5xl lg:text-6xl font-bold;
-}
-
-h3 {
-  @apply text-2xl md:text-3xl font-semibold;
-}
-
 /* Spacing and Layouts */
 .container-premium {
   @apply mx-auto max-w-7xl px-6 md:px-12 lg:px-8;
@@ -119,8 +107,12 @@ h3 {
 
 /* Custom inputs for premium checkout forms */
 .premium-input {
-  @apply w-full bg-white border border-stone-200 px-5 py-4 text-base transition-all duration-300 focus:outline-none focus:border-amber-600 rounded-none;
+  @apply w-full bg-white border border-stone-200 px-5 py-4 text-sm transition-all duration-300 focus:outline-none focus:border-amber-600 focus:ring-4 focus:ring-amber-600/10 rounded-none;
   font-family: 'Inter', sans-serif;
+}
+
+.premium-input.error-input {
+  @apply border-red-400 bg-red-50/10 focus:border-red-600 focus:ring-red-600/15;
 }
 
 .premium-label {
@@ -130,12 +122,12 @@ h3 {
 
 /* Custom button states */
 .premium-btn-primary {
-  @apply inline-flex items-center justify-center bg-stone-950 text-white font-semibold uppercase tracking-[0.25em] text-xs px-10 py-5 transition-all duration-500 hover:bg-amber-600 hover:text-white rounded-none;
+  @apply inline-flex items-center justify-center bg-stone-950 text-white font-semibold uppercase tracking-[0.25em] text-xs px-10 py-5 transition-all duration-300 hover:bg-amber-600 hover:text-white rounded-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:transform-none select-none;
   font-family: 'Montserrat', sans-serif;
 }
 
 .premium-btn-secondary {
-  @apply inline-flex items-center justify-center border border-stone-950 text-stone-950 font-semibold uppercase tracking-[0.25em] text-xs px-10 py-5 transition-all duration-500 hover:bg-stone-950 hover:text-white rounded-none;
+  @apply inline-flex items-center justify-center border border-stone-950 text-stone-950 font-semibold uppercase tracking-[0.25em] text-xs px-10 py-5 transition-all duration-300 hover:bg-stone-950 hover:text-white rounded-none active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:transform-none select-none;
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -151,4 +143,66 @@ h3 {
 
 .pulse-glow-amber {
   animation: pulseGlow 2s infinite;
+}
+
+/* Luxury Skeleton Shimmer Loading */
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #FBF8F3 25%, #F4ECE1 50%, #FBF8F3 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+}
+
+/* ─── Accessibility: Focus-visible rings ───────────────────────────────────── */
+
+/*
+ * Remove default browser outline only for mouse/touch users.
+ * Keep it for keyboard users (:focus-visible).
+ */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 2px solid #D97706; /* amber-600 */
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Dark surface overrides — ensure ring is visible on stone-950 backgrounds */
+.bg-stone-950 *:focus-visible,
+button.bg-stone-950:focus-visible {
+  outline-color: #FDE68A; /* amber-200 */
+}
+
+/* Screen-reader-only utility (mirrors Tailwind sr-only) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: initial;
+  margin: initial;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
 }

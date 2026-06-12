@@ -6,10 +6,13 @@ import Image from 'next/image';
 import { Menu, X, ShoppingBag, User } from 'lucide-react';
 import { useCart } from '@/lib/cart-context';
 import CartDrawer from './CartDrawer';
+import { usePathname } from 'next/navigation';
+import { CREAM_BLUR_PIXEL } from '@/lib/image-utils';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount, setIsOpen: setCartOpen } = useCart();
+  const pathname = usePathname();
 
   const navItems = [
     { label: 'Shop', href: '/shop' },
@@ -23,16 +26,28 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed left-0 right-0 top-0 z-40 border-b border-stone-200/50 bg-[#FFFBF5]/90 backdrop-blur-md">
+      <nav
+        aria-label="Main navigation"
+        className="fixed left-0 right-0 top-0 z-40 border-b border-stone-200/50 bg-[#FFFBF5]/90 backdrop-blur-md"
+      >
         <div className="container-premium flex h-20 items-center justify-between gap-6">
           {/* Logo Section */}
-          <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-75">
+          <Link
+            href="/"
+            aria-label="Zion Cakes and Bites — Home"
+            className="flex items-center gap-3 transition-opacity hover:opacity-75"
+          >
             <div className="relative h-10 w-10 overflow-hidden border border-stone-200 bg-white">
               <Image
                 src="/logo.png"
-                alt="Zion Cakes and Bites"
+                alt=""
+                aria-hidden="true"
                 fill
+                priority
+                sizes="40px"
                 className="object-cover"
+                placeholder="blur"
+                blurDataURL={CREAM_BLUR_PIXEL}
               />
             </div>
             <div>
@@ -40,43 +55,59 @@ export default function Navbar() {
                 Zion
               </p>
               <p className="font-sans-luxury text-[9px] font-semibold uppercase tracking-[0.24em] text-amber-700 leading-tight mt-0.5">
-                Cakes & Bites
+                Cakes &amp; Bites
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="font-sans-luxury text-[10px] font-bold uppercase tracking-[0.2em] text-stone-600 hover:text-amber-600 transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="hidden items-center gap-8 md:flex h-full" role="menubar">
+            {navItems.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== '/' && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  role="menuitem"
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`font-sans-luxury text-[10px] font-bold uppercase tracking-[0.2em] transition-colors flex items-center h-full border-b-2 py-4 ${
+                    isActive
+                      ? 'text-amber-600 border-amber-600'
+                      : 'text-stone-600 hover:text-amber-600 border-transparent'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Action Icons (Cart, Account, Mobile Menu) */}
           <div className="flex items-center gap-2">
             <Link
               href="/account"
-              aria-label="Account"
-              className="inline-flex h-10 w-10 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300"
+              aria-label="My Account"
+              className="inline-flex h-11 w-11 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300"
             >
-              <User className="h-4 w-4" />
+              <User className="h-5 w-5" aria-hidden="true" />
             </Link>
 
             <button
+              id="cart-toggle-btn"
               onClick={() => setCartOpen(true)}
               type="button"
-              aria-label="Cart"
-              className="relative inline-flex h-10 w-10 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300"
+              aria-label={`Open shopping cart${cartCount > 0 ? `, ${cartCount} item${cartCount > 1 ? 's' : ''}` : ''}`}
+              aria-haspopup="dialog"
+              className="relative inline-flex h-11 w-11 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300"
             >
-              <ShoppingBag className="h-4 w-4" />
+              <ShoppingBag className="h-5 w-5" aria-hidden="true" />
               {cartCount > 0 && (
-                <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center bg-amber-600 text-[10px] font-black text-white rounded-full font-sans-luxury pulse-glow-amber">
+                <span
+                  aria-hidden="true"
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center bg-amber-600 text-[10px] font-black text-white rounded-full font-sans-luxury pulse-glow-amber"
+                >
                   {cartCount}
                 </span>
               )}
@@ -84,29 +115,48 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex h-10 w-10 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300 md:hidden"
-              aria-label="Open menu"
+              className="inline-flex h-11 w-11 items-center justify-center border border-stone-200 text-stone-700 hover:bg-stone-950 hover:text-white transition-all duration-300 md:hidden"
+              aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-nav"
             >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="border-t border-stone-200 bg-[#FFFBF5] md:hidden">
-            <div className="container-premium space-y-1 py-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block py-3 text-xs font-bold uppercase tracking-[0.2em] text-stone-700 hover:text-amber-600 transition-colors font-sans-luxury"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
+          <div
+            id="mobile-nav"
+            className="border-t border-stone-200 bg-[#FFFBF5] md:hidden"
+          >
+            <nav aria-label="Mobile navigation" className="container-premium space-y-1 py-4">
+              {navItems.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  (item.href !== '/' && pathname.startsWith(item.href));
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`block py-4 text-xs font-bold uppercase tracking-[0.2em] transition-colors font-sans-luxury border-l-2 pl-4 ${
+                      isActive
+                        ? 'text-amber-600 border-amber-600 bg-amber-50/5'
+                        : 'text-stone-700 hover:text-amber-600 border-transparent'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
         )}
       </nav>
@@ -116,4 +166,3 @@ export default function Navbar() {
     </>
   );
 }
-

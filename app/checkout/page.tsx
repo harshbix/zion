@@ -3,17 +3,19 @@
 import React, { useState, Suspense } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { useOrders } from '@/lib/order-context';
+import { useToast } from '@/lib/toast-context';
 import { formatCurrency } from '@/lib/utils';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CreditCard, Smartphone, ShieldCheck, Truck, ShoppingBag, ArrowLeft, CheckCircle } from 'lucide-react';
+import { CreditCard, Smartphone, ShieldCheck, Truck, ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
 
 type PaymentType = 'card' | 'mobile' | 'cod' | 'whatsapp';
 
 function CheckoutForm() {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { placeNewOrder } = useOrders();
+  const toast = useToast();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -39,13 +41,78 @@ function CheckoutForm() {
   // Mobile money
   const [mobilePhone, setMobilePhone] = useState('');
 
+  // Inline Validation Errors
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const deliveryFee = cartItems.length > 0 ? 5000 : 0;
   const grandTotal = cartTotal + deliveryFee;
+
+  const validateField = (name: string, value: string): boolean => {
+    let err = '';
+    if (name === 'name') {
+      if (value.trim().length < 3) err = 'Full name must be at least 3 characters.';
+    } else if (name === 'email') {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) err = 'Provide a valid email address.';
+    } else if (name === 'phone') {
+      // Tanzanian numbers usually match (+255 or 0) followed by 6 or 7 and 8 digits
+      const cleaned = value.replace(/\s+/g, '');
+      if (!/^(\+?255|0)[67]\d{8}$/.test(cleaned)) {
+        err = 'Provide a valid phone number (e.g. +255 789 123 456 or 0789 123 456).';
+      }
+    } else if (name === 'address') {
+      if (value.trim().length < 8) err = 'Address landmark must be at least 8 characters.';
+    } else if (name === 'cardNumber') {
+      if (value.replace(/\s/g, '').length !== 16) err = 'Provide a valid 16-digit card number.';
+    } else if (name === 'cardExpiry') {
+      if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(value)) err = 'Use MM/YY format.';
+    } else if (name === 'cardCvc') {
+      if (value.length !== 3) err = 'CVC must be exactly 3 digits.';
+    } else if (name === 'mobilePhone') {
+      const cleaned = value.replace(/\s+/g, '');
+      if (!/^(\+?255|0)[67]\d{8}$/.test(cleaned)) {
+        err = 'Provide a valid Mobile Wallet number (e.g., 0789 123 456).';
+      }
+    }
+
+    setErrors((prev) => ({ ...prev, [name]: err }));
+    return err === '';
+  };
+
+  const handleFieldChange = (field: string, value: string) => {
+    if (field in shippingDetails) {
+      setShippingDetails((prev) => ({ ...prev, [field]: value }));
+    }
+    validateField(field, value);
+  };
 
   const handleCheckoutSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (cartItems.length === 0) return;
+    if (cartItems.length === 0) {
+      toast.error('Your cart is empty. Add products before checkout.');
+      return;
+    }
+
+    // Validate main shipping details
+    const isNameValid = validateField('name', shippingDetails.name);
+    const isEmailValid = validateField('email', shippingDetails.email);
+    const isPhoneValid = validateField('phone', shippingDetails.phone);
+    const isAddressValid = validateField('address', shippingDetails.address);
+
+    let isPaymentValid = true;
+    if (paymentMethod === 'card') {
+      const isCardNum = validateField('cardNumber', cardDetails.number);
+      const isCardExp = validateField('cardExpiry', cardDetails.expiry);
+      const isCardCvc = validateField('cardCvc', cardDetails.cvc);
+      isPaymentValid = isCardNum && isCardExp && isCardCvc;
+    } else if (paymentMethod === 'mobile') {
+      isPaymentValid = validateField('mobilePhone', mobilePhone);
+    }
+
+    if (!isNameValid || !isEmailValid || !isPhoneValid || !isAddressValid || !isPaymentValid) {
+      toast.error('Please resolve validation errors in the form.');
+      return;
+    }
 
     if (paymentMethod === 'whatsapp') {
       handleWhatsAppExport();
@@ -81,6 +148,7 @@ function CheckoutForm() {
       setLoading(false);
       setSuccess(true);
       clearCart();
+      toast.success('Your order has been authorized and sent to our kitchens!');
     }, 2000);
   };
 
@@ -110,7 +178,7 @@ function CheckoutForm() {
     return (
       <div className="py-16 text-center space-y-6 max-w-md mx-auto">
         <CheckCircle className="w-16 h-16 text-green-600 mx-auto" />
-        <h2 className="font-serif-luxury text-3xl font-bold text-stone-900">Payment Confirmed</h2>
+        <h2 className="font-sans-luxury text-2xl font-bold text-stone-900 uppercase tracking-widest">Payment Confirmed</h2>
         <p className="text-stone-500 text-xs leading-relaxed" style={{ fontFamily: 'Inter' }}>
           Your order <strong>#{createdOrderId}</strong> has been successfully received by our Mbeya kitchens. Our bakers have started pre-heating the ovens.
         </p>
@@ -136,7 +204,7 @@ function CheckoutForm() {
         
         {/* Shipping details */}
         <div className="space-y-6">
-          <h2 className="font-serif-luxury text-xl font-bold text-stone-950 border-b border-stone-100 pb-4">
+          <h2 className="font-sans-luxury text-xs font-black uppercase tracking-widest text-stone-950 border-b border-stone-100 pb-4">
             1. Client & Delivery Details
           </h2>
 
@@ -148,9 +216,14 @@ function CheckoutForm() {
                 type="text"
                 placeholder="John Doe"
                 value={shippingDetails.name}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, name: e.target.value })}
-                className="premium-input text-xs uppercase tracking-wider"
+                onChange={(e) => handleFieldChange('name', e.target.value)}
+                className={`premium-input text-xs uppercase tracking-wider ${errors.name ? 'error-input' : ''}`}
               />
+              {errors.name && (
+                <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.name}
+                </span>
+              )}
             </div>
             <div className="space-y-2">
               <label className="premium-label">Email Address</label>
@@ -159,9 +232,14 @@ function CheckoutForm() {
                 type="email"
                 placeholder="john@example.com"
                 value={shippingDetails.email}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, email: e.target.value })}
-                className="premium-input text-xs uppercase tracking-wider"
+                onChange={(e) => handleFieldChange('email', e.target.value)}
+                className={`premium-input text-xs uppercase tracking-wider ${errors.email ? 'error-input' : ''}`}
               />
+              {errors.email && (
+                <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.email}
+                </span>
+              )}
             </div>
           </div>
 
@@ -173,9 +251,14 @@ function CheckoutForm() {
                 type="tel"
                 placeholder="+255 789 123 456"
                 value={shippingDetails.phone}
-                onChange={(e) => setShippingDetails({ ...shippingDetails, phone: e.target.value })}
-                className="premium-input text-xs uppercase tracking-wider"
+                onChange={(e) => handleFieldChange('phone', e.target.value)}
+                className={`premium-input text-xs uppercase tracking-wider ${errors.phone ? 'error-input' : ''}`}
               />
+              {errors.phone && (
+                <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                  <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.phone}
+                </span>
+              )}
             </div>
             <div className="space-y-2">
               <label className="premium-label">City</label>
@@ -196,15 +279,20 @@ function CheckoutForm() {
               type="text"
               placeholder="e.g. Forest Area, Landmark near Referral Hospital Plot 14"
               value={shippingDetails.address}
-              onChange={(e) => setShippingDetails({ ...shippingDetails, address: e.target.value })}
-              className="premium-input text-xs uppercase tracking-wider"
+              onChange={(e) => handleFieldChange('address', e.target.value)}
+              className={`premium-input text-xs uppercase tracking-wider ${errors.address ? 'error-input' : ''}`}
             />
+            {errors.address && (
+              <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.address}
+              </span>
+            )}
           </div>
         </div>
 
         {/* Payment options */}
         <div className="space-y-6 border-t border-stone-100 pt-8">
-          <h2 className="font-serif-luxury text-xl font-bold text-stone-950 border-b border-stone-100 pb-4">
+          <h2 className="font-sans-luxury text-xs font-black uppercase tracking-widest text-stone-950 border-b border-stone-100 pb-4">
             2. Choose Secure Payment
           </h2>
 
@@ -212,8 +300,8 @@ function CheckoutForm() {
             {/* Credit card option */}
             <button
               type="button"
-              onClick={() => setPaymentMethod('card')}
-              className={`p-5 border flex items-center gap-4 text-left transition-all ${
+              onClick={() => { setPaymentMethod('card'); setErrors({}); }}
+              className={`p-5 border flex items-center gap-4 text-left transition-all min-h-[44px] ${
                 paymentMethod === 'card' ? 'border-amber-600 bg-amber-50/10' : 'border-stone-200 hover:border-stone-900 bg-white'
               }`}
             >
@@ -227,8 +315,8 @@ function CheckoutForm() {
             {/* Mobile money option */}
             <button
               type="button"
-              onClick={() => setPaymentMethod('mobile')}
-              className={`p-5 border flex items-center gap-4 text-left transition-all ${
+              onClick={() => { setPaymentMethod('mobile'); setErrors({}); }}
+              className={`p-5 border flex items-center gap-4 text-left transition-all min-h-[44px] ${
                 paymentMethod === 'mobile' ? 'border-amber-600 bg-amber-50/10' : 'border-stone-200 hover:border-stone-900 bg-white'
               }`}
             >
@@ -242,8 +330,8 @@ function CheckoutForm() {
             {/* Cash on delivery */}
             <button
               type="button"
-              onClick={() => setPaymentMethod('cod')}
-              className={`p-5 border flex items-center gap-4 text-left transition-all ${
+              onClick={() => { setPaymentMethod('cod'); setErrors({}); }}
+              className={`p-5 border flex items-center gap-4 text-left transition-all min-h-[44px] ${
                 paymentMethod === 'cod' ? 'border-amber-600 bg-amber-50/10' : 'border-stone-200 hover:border-stone-900 bg-white'
               }`}
             >
@@ -257,8 +345,8 @@ function CheckoutForm() {
             {/* WhatsApp Checkout */}
             <button
               type="button"
-              onClick={() => setPaymentMethod('whatsapp')}
-              className={`p-5 border flex items-center gap-4 text-left transition-all ${
+              onClick={() => { setPaymentMethod('whatsapp'); setErrors({}); }}
+              className={`p-5 border flex items-center gap-4 text-left transition-all min-h-[44px] ${
                 paymentMethod === 'whatsapp' ? 'border-amber-600 bg-amber-50/10' : 'border-stone-200 hover:border-stone-900 bg-white'
               }`}
             >
@@ -281,9 +369,18 @@ function CheckoutForm() {
                     required
                     placeholder="4111 2222 3333 4444"
                     value={cardDetails.number}
-                    onChange={(e) => setCardDetails({ ...cardDetails, number: e.target.value.replace(/[^0-9]/g, '').slice(0, 16) })}
-                    className="premium-input text-xs tracking-widest"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 16);
+                      setCardDetails({ ...cardDetails, number: val });
+                      validateField('cardNumber', val);
+                    }}
+                    className={`premium-input text-xs tracking-widest ${errors.cardNumber ? 'error-input' : ''}`}
                   />
+                  {errors.cardNumber && (
+                    <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.cardNumber}
+                    </span>
+                  )}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -293,9 +390,18 @@ function CheckoutForm() {
                       required
                       placeholder="MM/YY"
                       value={cardDetails.expiry}
-                      onChange={(e) => setCardDetails({ ...cardDetails, expiry: e.target.value.slice(0, 5) })}
-                      className="premium-input text-xs tracking-widest"
+                      onChange={(e) => {
+                        const val = e.target.value.slice(0, 5);
+                        setCardDetails({ ...cardDetails, expiry: val });
+                        validateField('cardExpiry', val);
+                      }}
+                      className={`premium-input text-xs tracking-widest ${errors.cardExpiry ? 'error-input' : ''}`}
                     />
+                    {errors.cardExpiry && (
+                      <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.cardExpiry}
+                      </span>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label className="premium-label">CVC / CVV</label>
@@ -304,9 +410,18 @@ function CheckoutForm() {
                       required
                       placeholder="123"
                       value={cardDetails.cvc}
-                      onChange={(e) => setCardDetails({ ...cardDetails, cvc: e.target.value.replace(/[^0-9]/g, '').slice(0, 3) })}
-                      className="premium-input text-xs tracking-widest"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 3);
+                        setCardDetails({ ...cardDetails, cvc: val });
+                        validateField('cardCvc', val);
+                      }}
+                      className={`premium-input text-xs tracking-widest ${errors.cardCvc ? 'error-input' : ''}`}
                     />
+                    {errors.cardCvc && (
+                      <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.cardCvc}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -324,9 +439,18 @@ function CheckoutForm() {
                     required
                     placeholder="0789 123 456"
                     value={mobilePhone}
-                    onChange={(e) => setMobilePhone(e.target.value)}
-                    className="premium-input text-xs tracking-wider"
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setMobilePhone(val);
+                      validateField('mobilePhone', val);
+                    }}
+                    className={`premium-input text-xs tracking-wider ${errors.mobilePhone ? 'error-input' : ''}`}
                   />
+                  {errors.mobilePhone && (
+                    <span className="text-[10px] text-red-600 font-semibold tracking-wide flex items-center gap-1 mt-1 font-sans-luxury uppercase">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" /> {errors.mobilePhone}
+                    </span>
+                  )}
                 </div>
               </div>
             )}
@@ -359,10 +483,10 @@ function CheckoutForm() {
               <div key={`${item.id}-${item.selectedSize}`} className={`flex gap-3 items-center justify-between ${index > 0 ? 'pt-3' : ''}`}>
                 <div className="flex items-center gap-3">
                   <div className="relative w-10 h-10 overflow-hidden bg-stone-50 border border-stone-200">
-                    <Image src={item.image} alt={item.name} fill className="object-cover" />
+                    <Image src={item.image} alt={item.name} fill sizes="40px" className="object-cover" />
                   </div>
                   <div>
-                    <h4 className="font-serif-luxury text-xs font-bold text-stone-900 leading-tight">{item.name}</h4>
+                    <h4 className="font-sans-luxury text-xs font-bold text-stone-900 leading-tight">{item.name}</h4>
                     <p className="text-[9px] font-sans-luxury text-stone-400 mt-0.5">X{item.quantity} {item.selectedSize && `(${item.selectedSize})`}</p>
                   </div>
                 </div>
@@ -391,7 +515,7 @@ function CheckoutForm() {
           <button
             disabled={loading || cartItems.length === 0}
             type="submit"
-            className="w-full premium-btn-primary h-14 flex items-center justify-center"
+            className="w-full premium-btn-primary h-14 flex items-center justify-center select-none active:scale-[0.98]"
           >
             {loading ? (
               <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -422,7 +546,7 @@ export default function CheckoutPage() {
         
         {/* Breadcrumbs */}
         <div className="mb-12 border-b border-stone-200/50 pb-6 flex items-baseline justify-between">
-          <h1 className="font-serif-luxury text-stone-900 text-3xl md:text-5xl font-bold">
+          <h1 className="font-sans-luxury text-stone-900 text-3xl md:text-5xl font-bold uppercase tracking-wide">
             Checkout
           </h1>
           <Link href="/cart" className="font-sans-luxury text-[10px] font-bold uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-2">

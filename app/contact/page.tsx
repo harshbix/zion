@@ -34,7 +34,7 @@ export default function ContactPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             CONNECT WITH US
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 leading-tight text-5xl md:text-6xl font-black">
             Get in Touch
           </h1>
           <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -47,7 +47,7 @@ export default function ContactPage() {
           
           {/* Left Column: Inquiry Form (col-span-7) */}
           <div className="lg:col-span-7 bg-white border border-stone-200 p-8">
-            <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
+            <h2 className="font-sans-luxury text-2xl font-bold text-stone-900 mb-6 border-b border-stone-100 pb-4">
               Send an Inquiry
             </h2>
 
@@ -132,7 +132,7 @@ export default function ContactPage() {
                   className="py-12 text-center space-y-4"
                 >
                   <CheckCircle className="w-16 h-16 text-green-600 mx-auto" />
-                  <h3 className="font-serif-luxury text-2xl font-bold text-stone-900">Inquiry Received</h3>
+                  <h3 className="font-sans-luxury text-2xl font-bold text-stone-900">Inquiry Received</h3>
                   <p className="text-stone-500 text-xs max-w-sm mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
                     Thank you. Your inquiry has been logged in our system. A Zion baker or customer manager will reach out within 2 hours.
                   </p>
@@ -152,7 +152,7 @@ export default function ContactPage() {
           {/* Right Column: Address/Hours/Map (col-span-5) */}
           <div className="lg:col-span-5 space-y-8">
             <div className="bg-white border border-stone-200 p-8 space-y-6">
-              <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 border-b border-stone-100 pb-4">
+              <h2 className="font-sans-luxury text-2xl font-bold text-stone-900 border-b border-stone-100 pb-4">
                 Bakery Details
               </h2>
               

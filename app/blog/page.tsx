@@ -5,46 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Search, BookOpen, Calendar, Clock } from 'lucide-react';
-
-export type BlogPost = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  image: string;
-  date: string;
-  readTime: string;
-  category: string;
-};
-
-export const blogPosts: BlogPost[] = [
-  {
-    slug: 'mbeya-volcanic-flavors',
-    title: 'The Volcanic Flavors of Southern Tanzania',
-    excerpt: 'How the high-altitude, fertile volcanic soil surrounding Mount Rungwe shapes the distinct taste profile of Mbeya mangoes and vanilla beans.',
-    image: 'https://images.unsplash.com/photo-1546173152-fd1adac65050?w=600&h=400&fit=crop',
-    date: 'June 10, 2026',
-    readTime: '4 min read',
-    category: 'Sourcing',
-  },
-  {
-    slug: 'science-of-cold-fermentation',
-    title: 'The Science of Sourdough & Cold Fermentation',
-    excerpt: 'Why unhurried cold-fermentation is the secret to developing premium croissant crusts and highly digestible organic bread rolls.',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop',
-    date: 'June 01, 2026',
-    readTime: '6 min read',
-    category: 'Technique',
-  },
-  {
-    slug: 'perfect-red-velvet-crumb',
-    title: 'Red Velvet Elegance: Achieving the Fluffiest Crumb',
-    excerpt: 'Exploring the chemical balance of cocoa acidity and cream cheese frosting density that makes our signature Red Velvet legendary.',
-    image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?w=600&h=400&fit=crop',
-    date: 'May 22, 2026',
-    readTime: '5 min read',
-    category: 'Recipes',
-  },
-];
+import { blogPosts } from '@/lib/blog';
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -78,7 +39,7 @@ export default function BlogPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             THE JOURNAL
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 leading-tight text-5xl md:text-6xl font-black">
             Zion Journal
           </h1>
           <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -148,7 +109,7 @@ export default function BlogPage() {
                         <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{post.date}</span>
                         <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{post.readTime}</span>
                       </div>
-                      <h3 className="font-serif-luxury text-xl font-bold text-stone-900 leading-tight">
+                      <h3 className="font-sans-luxury text-xl font-bold text-stone-900 leading-tight">
                         <Link href={`/blog/${post.slug}`} className="hover:text-amber-600 transition-colors">
                           {post.title}
                         </Link>
@@ -168,7 +129,7 @@ export default function BlogPage() {
               ))
             ) : (
               <div className="col-span-full py-20 text-center">
-                <p className="font-serif-luxury text-xl text-stone-500 italic">
+                <p className="font-sans-luxury text-xl text-stone-500 italic">
                   No journal articles found. Try another query.
                 </p>
               </div>

@@ -45,7 +45,7 @@ export default function CategoriesPage() {
           <span className="font-sans-luxury text-xs font-black text-amber-600 uppercase tracking-[0.3em]">
             DISCOVER TASTE
           </span>
-          <h1 className="font-serif-luxury text-stone-900 leading-tight">
+          <h1 className="font-sans-luxury text-stone-900 leading-tight text-5xl md:text-6xl font-black">
             Menu Categories
           </h1>
           <p className="text-stone-500 text-sm max-w-xl mx-auto leading-relaxed" style={{ fontFamily: 'Inter' }}>
@@ -79,7 +79,7 @@ export default function CategoriesPage() {
                 {/* Category Details */}
                 <div className="absolute inset-0 flex flex-col justify-end p-8 text-white space-y-4">
                   <div className="flex justify-between items-baseline">
-                    <h2 className="font-serif-luxury text-3xl font-bold tracking-tight">
+                    <h2 className="font-sans-luxury text-3xl font-bold tracking-tight">
                       {cat.title}
                     </h2>
                     <span className="font-sans-luxury text-xs bg-amber-600/90 text-white font-bold px-3 py-1 tracking-wider uppercase">
