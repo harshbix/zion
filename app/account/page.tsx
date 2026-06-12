@@ -5,9 +5,11 @@ import { formatCurrency } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { User, MapPin, Package, Clock, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AccountPage() {
   const { orders, setActiveOrder } = useOrders();
+  const { user } = useAuth();
   const router = useRouter();
 
   const handleTrackClick = (order: typeof orders[0]) => {
@@ -41,7 +43,9 @@ export default function AccountPage() {
                   <User className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-sans-luxury text-base font-bold text-stone-900 leading-tight">John Doe</h3>
+                  <h3 className="font-sans-luxury text-base font-bold text-stone-900 leading-tight">
+                    {user?.displayName || 'John Doe'}
+                  </h3>
                   <span className="text-[10px] font-sans-luxury text-stone-400 uppercase tracking-wider">Premium Member</span>
                 </div>
               </div>
@@ -49,7 +53,7 @@ export default function AccountPage() {
               <div className="space-y-4 pt-4 border-t border-stone-100 text-xs font-sans-luxury text-stone-600 tracking-wider">
                 <div>
                   <span className="text-[10px] text-stone-400 block uppercase mb-0.5">EMAIL</span>
-                  <span className="text-stone-950 font-bold">john.doe@example.com</span>
+                  <span className="text-stone-950 font-bold">{user?.email || 'john.doe@example.com'}</span>
                 </div>
                 <div>
                   <span className="text-[10px] text-stone-400 block uppercase mb-0.5">PHONE</span>
