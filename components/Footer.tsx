@@ -73,11 +73,26 @@ export default function Footer() {
       </div>
 
       <div className="container-premium border-t border-stone-200 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-stone-500 font-sans-luxury tracking-wider gap-4">
-        <p>&copy; {currentYear} ZION CAKES AND BITES. ALL RIGHTS RESERVED.</p>
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <p>&copy; {currentYear} ZION CAKES AND BITES. ALL RIGHTS RESERVED.</p>
+          <span className="hidden sm:inline text-stone-300">|</span>
+          <p>
+            MADE BY{' '}
+            <a 
+              href="https://www.linkedin.com/in/juniorjeconia" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="font-bold hover:text-amber-600 transition-colors"
+            >
+              JUNIORJECONIA
+            </a>
+          </p>
+        </div>
         <div className="flex gap-6">
           <a href="#instagram" className="hover:text-amber-600 transition-colors">INSTAGRAM</a>
           <a href="#whatsapp" className="hover:text-amber-600 transition-colors">WHATSAPP</a>
           <a href="#email" className="hover:text-amber-600 transition-colors">EMAIL</a>
+          <Link href="/admin" className="hover:text-amber-600 transition-colors font-bold text-stone-700">ADMIN</Link>
         </div>
       </div>
     </footer>

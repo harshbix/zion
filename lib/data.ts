@@ -1,4 +1,4 @@
-export const businessData = {
+export let businessData = {
   name: 'Zion Cakes and Bites',
   tagline: 'Freshly Baked. Locally Loved. Crafted in Mbeya.',
   location: {
@@ -41,14 +41,14 @@ export const businessData = {
     'Zion Cakes and Bites is a premium bakery and restaurant in Mbeya, Tanzania. We specialize in freshly baked cakes, juices, grilled chicken, and authentic local Tanzanian cuisine. Our commitment to quality, affordability, and exceptional service makes us your favorite local destination.',
 };
 
-export const heroContent = {
+export let heroContent = {
   headline: 'Freshly Baked. Locally Loved. Crafted in Mbeya.',
   subheadline: 'Premium cakes, juices, and local flavors in the heart of Mbeya',
   ctaPrimary: 'View Menu',
   ctaSecondary: 'Order Now',
 };
 
-export const aboutContent = {
+export let aboutContent = {
   title: 'About Zion Cakes and Bites',
   sections: [
     {
@@ -85,3 +85,32 @@ export const keywords = [
   'grilled chicken',
   'premium bakery',
 ];
+
+if (typeof window !== 'undefined') {
+  const storedData = localStorage.getItem('zion_business_data');
+  if (storedData) {
+    try {
+      businessData = JSON.parse(storedData);
+    } catch (e) {
+      console.error('Failed to parse zion_business_data', e);
+    }
+  }
+
+  const storedHero = localStorage.getItem('zion_hero_content');
+  if (storedHero) {
+    try {
+      heroContent = JSON.parse(storedHero);
+    } catch (e) {
+      console.error('Failed to parse zion_hero_content', e);
+    }
+  }
+
+  const storedAbout = localStorage.getItem('zion_about_content');
+  if (storedAbout) {
+    try {
+      aboutContent = JSON.parse(storedAbout);
+    } catch (e) {
+      console.error('Failed to parse zion_about_content', e);
+    }
+  }
+}

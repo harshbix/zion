@@ -10,7 +10,7 @@ export type MenuItem = {
   tags?: string[];
 };
 
-export const menuItems: MenuItem[] = [
+export let menuItems: MenuItem[] = [
   // CAKES
   {
     id: 'c1',
@@ -269,6 +269,17 @@ export const menuItems: MenuItem[] = [
     tags: ['vegetarian', 'pastry', 'healthy'],
   },
 ];
+
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('zion_menu_items');
+  if (stored) {
+    try {
+      menuItems = JSON.parse(stored);
+    } catch (e) {
+      console.error('Failed to parse zion_menu_items', e);
+    }
+  }
+}
 
 export const categories = [
   { id: 'cakes', label: 'Cakes', icon: '🎂' },

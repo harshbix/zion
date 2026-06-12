@@ -8,7 +8,7 @@ export type BlogPost = {
   category: string;
 };
 
-export const blogPosts: BlogPost[] = [
+export let blogPosts: BlogPost[] = [
   {
     slug: 'mbeya-volcanic-flavors',
     title: 'The Volcanic Flavors of Southern Tanzania',
@@ -37,3 +37,14 @@ export const blogPosts: BlogPost[] = [
     category: 'Recipes',
   },
 ];
+
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('zion_blog_posts');
+  if (stored) {
+    try {
+      blogPosts = JSON.parse(stored);
+    } catch (e) {
+      console.error('Failed to parse zion_blog_posts', e);
+    }
+  }
+}

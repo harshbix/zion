@@ -8,7 +8,7 @@ export type Review = {
   verified?: boolean;
 };
 
-export const reviews: Review[] = [
+export let reviews: Review[] = [
   {
     id: 'r1',
     author: 'Grace Mbeya',
@@ -118,6 +118,17 @@ export const reviews: Review[] = [
     verified: true,
   },
 ];
+
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('zion_reviews');
+  if (stored) {
+    try {
+      reviews = JSON.parse(stored);
+    } catch (e) {
+      console.error('Failed to parse zion_reviews', e);
+    }
+  }
+}
 
 export function getRatingStats() {
   const stats = {
