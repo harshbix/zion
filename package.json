@@ -4,10 +4,9 @@
   "description": "official website for zion cakes and bites",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next build",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "type-check": "tsc --noEmit"
   },
   "repository": {
@@ -22,24 +21,26 @@
   },
   "homepage": "https://github.com/harshbix/zion#readme",
   "dependencies": {
-    "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
     "autoprefixer": "^10.5.0",
+    "axios": "^1.17.0",
     "firebase": "^12.14.0",
     "framer-motion": "^12.40.0",
     "gsap": "^3.15.0",
-    "lucide-react": "^1.17.0",
-    "next": "^16.2.6",
+    "lucide-react": "^1.18.0",
     "postcss": "^8.5.15",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-router-dom": "^7.17.0",
     "tailwindcss": "^4.3.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
-    "eslint": "^9.0.0",
-    "eslint-config-next": "^16.2.9"
+    "@types/node": "^25.9.3",
+    "eslint": "^9.0.0"
   }
 }
